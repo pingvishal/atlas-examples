@@ -1,0 +1,60 @@
+{
+    "variables": {
+        "docker_version": "ubuntu:latest",
+        "docker_repository": "bensojona/packer",
+        "docker_login_email": "{{env `DOCKER_LOGIN_EMAIL`}}",
+        "docker_username": "{{env `DOCKER_USER_NAME`}}",
+        "docker_password": "{{env `DOCKER_PASSWORD`}}",
+        "docker_login_server": "{{env `DOCKER_LOGIN_SERVER`}}"
+    },
+    "builders": [
+        {
+            "type": "docker",
+            "image": "{{user `docker_version`}}",
+            "export_path": "packer_docker_image.tar"
+        }
+    ],
+    "push": {
+      "name": "jb_hashicorp/docker-consul",
+      "vcs": false
+    },
+    "provisioners": [
+        {
+            "type": "shell",
+            "inline": [
+                "sudo mkdir /ops",
+                "sudo chmod a+w /ops"
+            ]
+        },
+        {
+            "type": "file",
+            "source": ".",
+            "destination": "/ops"
+        },
+        {
+            "type": "shell",
+            "script": "scripts/consul_base.sh"
+        },
+        {
+            "type": "shell",
+            "script": "scripts/consul_server.sh"
+        }
+    ],
+    "post-processors": [
+        [
+            {
+                "type": "docker-import",
+                "repository": "{{user `docker_repository`}}",
+                "tag": "consul"
+            },
+            {
+                "type": "docker-push",
+                "login": true,
+                "login_email": "{{user `docker_login_email`}}",
+                "login_username": "{{user `docker_username`}}",
+                "login_password": "{{user `docker_password`}}",
+                "login_server" : "{{user `docker_login_server`}}"
+            }
+        ]
+    ]
+}
