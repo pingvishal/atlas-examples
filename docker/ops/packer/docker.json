@@ -53,7 +53,7 @@
             {
                 "type": "docker-import",
                 "repository": "{{user `docker_repository`}}",
-                "tag": "docker"
+                "tag": "docker_{{timestamp}}"
             },
             {
                 "type": "docker-push",
