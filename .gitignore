@@ -1,10 +1,18 @@
 # vagrant directory
 .vagrant/
+*.box
 
 # terraform
 terraform.tfstate*
-*.tfvars
+.terraform/
+
+# packer
+.packer.d/
 
 # vim temp files
 .*.swp
 .*.swp
+
+# bash
+.bash_history
+.cache/

@@ -1,0 +1,32 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+# Vagrantfile API/syntax version. Don't touch unless you know what you're doing!
+Vagrant.require_version ">= 1.6.0"
+VAGRANTFILE_API_VERSION = "2"
+
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+  ENV['VAGRANT_DEFAULT_PROVIDER'] = 'virtualbox'
+
+  config.vm.define "docker_app" do |v|
+    v.vm.provider "docker" do |d|
+      d.name =            "docker_app"
+      d.image =           "bensojona/packer:app_1234"
+      # d.cmd =             ["/sbin/my_init", "--enable-insecure-key"]
+      # d.create_args =     [""]
+      d.force_host_vm =   true
+      d.has_ssh =         true
+      d.remains_running = true
+      d.email =           ENV['DOCKER_LOGIN_EMAIL']
+      d.username =        ENV['DOCKER_USER_NAME']
+      d.password =        ENV['DOCKER_PASSWORD']
+      d.auth_server =     ENV['DOCKER_LOGIN_SERVER']
+    end
+
+    # v.ssh.username = "root"
+    # v.ssh.private_key_path = ""
+    v.vm.hostname =      "docker-app"
+    v.vm.provision       "shell", inline: "echo Hello"
+    v.vm.synced_folder = ".", "/app"
+  end
+end
