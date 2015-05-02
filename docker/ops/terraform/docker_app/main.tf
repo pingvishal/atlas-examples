@@ -6,37 +6,29 @@ resource "docker_image" "app" {
 resource "docker_container" "app" {
     image = "${docker_image.app.latest}"
     name = "app_${count.index+1}"
+    hostname = "app_${count.index+1}"
     count = "${var.count}"
-    command = [
-        "-d -p 9999:80 ${var.docker_image} /usr/sbin/apache2ctl -D FOREGROUND",
-        # "-d -P -t -i ${var.docker_image}",
-        "sudo sed -i -- 's/{{ atlas_username }}/${var.atlas_username}/g' /etc/init/consul.conf",
-        "sudo sed -i -- 's/{{ atlas_token }}/${var.atlas_token}/g' /etc/init/consul.conf",
-        "sudo sed -i -- 's/{{ atlas_environment }}/${var.atlas_environment}/g' /etc/init/consul.conf",
-        "sudo sed -i -- 's/{{ count }}/${var.count}/g' /etc/init/consul.conf",
-        "sudo service consul restart"
-    ]
     must_run = true
-    publish_all_ports = true
-
-    /*
+    command = ["/sbin/my_init"]
     ports = {
-        internal = "80"
-        external = "80"
+        internal = "22"
+        external = "${var.port}${count.index}"
     }
 
     provisioner "remote-exec" {
         inline = [
-            "sudo sed -i -- 's/{{ atlas_username }}/${var.atlas_username}/g' /etc/init/consul.conf",
-            "sudo sed -i -- 's/{{ atlas_token }}/${var.atlas_token}/g' /etc/init/consul.conf",
-            "sudo sed -i -- 's/{{ atlas_environment }}/${var.atlas_environment}/g' /etc/init/consul.conf",
-            "sudo service consul restart"
+            "sudo sed -i -- 's/{{ atlas_username }}/${var.atlas_username}/g' /etc/service/consul/run",
+            "sudo sed -i -- 's/{{ atlas_token }}/${var.atlas_token}/g' /etc/service/consul/run",
+            "sudo sed -i -- 's/{{ atlas_environment }}/${var.atlas_environment}/g' /etc/service/consul/run",
+            "sudo chmod +x /etc/service/consul/run",
+            "sudo sv restart consul"
         ]
         connection {
             user = "${var.user}"
             key_file = "${var.key_file}"
             agent = "${var.agent}"
+            host = "${var.host}"
+            port = "${var.port}${count.index}"
         }
     }
-    */
 }

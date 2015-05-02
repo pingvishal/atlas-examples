@@ -1,7 +1,7 @@
 {
     "variables": {
-        "docker_version": "ubuntu:latest",
-        "docker_repository": "bensojona/packer",
+        "docker_image": "phusion/baseimage:latest",
+        "docker_repository": "bensojona/packer_2",
         "docker_login_email": "{{env `DOCKER_LOGIN_EMAIL`}}",
         "docker_username": "{{env `DOCKER_USER_NAME`}}",
         "docker_password": "{{env `DOCKER_PASSWORD`}}",
@@ -10,8 +10,8 @@
     "builders": [
         {
             "type": "docker",
-            "image": "{{user `docker_version`}}",
-            "export_path": "docker_consul.tar"
+            "image": "{{user `docker_image`}}",
+            "commit": true
         }
     ],
     "push": {
@@ -38,14 +38,23 @@
         {
             "type": "shell",
             "script": "scripts/consul_server.sh"
+        },
+        {
+            "type": "shell",
+            "inline": [
+                "sudo echo nameserver 8.8.8.8 >> /etc/resolv.conf",
+                "sudo rm -f /etc/service/sshd/down",
+                "sudo cat /ops/terraform/ssh_keys/docker-key.pub >> /root/.ssh/authorized_keys"
+            ]
         }
     ],
     "post-processors": [
         [
             {
-                "type": "docker-import",
+                "type": "docker-tag",
                 "repository": "{{user `docker_repository`}}",
-                "tag": "consul_{{timestamp}}"
+                "tag": "consul_{{timestamp}}",
+                "keep_input_artifact": true
             },
             {
                 "type": "docker-push",

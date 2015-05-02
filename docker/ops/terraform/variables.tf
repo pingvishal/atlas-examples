@@ -55,6 +55,9 @@ variable "base_count" {
     description = "Count of base instances Docker containers will run on"
     default = 1
 }
+variable "docker_host_ip" {
+    description = "Public IP address of Docker host"
+}
 variable "docker_cert_path" {
     description = "Path to a directory with certificate information for connecting to the Docker host via TLS"
     default = ""
@@ -67,7 +70,7 @@ variable "atlas_environment" {
 # Consul cluster specific variables
 variable "docker_consul_image" {
     description = "Docker image name for Consul cluster"
-    default = "bensojona/packer:consul_1429915814"
+    default = "hashicorp/packer:consul"
 }
 variable "consul_count" {
     description = "Count of nodes in Consul cluster"
@@ -77,7 +80,7 @@ variable "consul_count" {
 # App specific variables
 variable "docker_app_image" {
     description = "Docker image name for app"
-    default = "bensojona/packer:app_1429915393"
+    default = "hashicorp/packer:app"
 }
 variable "app_count" {
     description = "Count of nodes for app"

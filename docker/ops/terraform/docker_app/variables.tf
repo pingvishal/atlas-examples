@@ -6,9 +6,13 @@ variable "atlas_username" {}
 variable "atlas_token" {}
 variable "atlas_environment" {}
 variable "user" {
-    default = "docker"
+    default = "root"
 }
 variable "key_file" {}
 variable "agent" {
     default = false
+}
+variable "host" {}
+variable "port" {
+    default = 333
 }

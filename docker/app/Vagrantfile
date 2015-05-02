@@ -11,8 +11,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.define "docker_app" do |v|
     v.vm.provider "docker" do |d|
       d.name =            "docker_app"
-      d.image =           "bensojona/packer:app_1234"
-      # d.cmd =             ["/sbin/my_init", "--enable-insecure-key"]
+      d.image =           "bensojona/packer_2:app_1234"
+      d.cmd =             ["/sbin/my_init", "--enable-insecure-key"]
       # d.create_args =     [""]
       d.force_host_vm =   true
       d.has_ssh =         true
