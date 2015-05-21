@@ -8,12 +8,11 @@ VAGRANTFILE_API_VERSION = "2"
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   ENV['VAGRANT_DEFAULT_PROVIDER'] = 'virtualbox'
 
-  config.vm.define "docker_app" do |v|
+  config.vm.define "docker_apache" do |v|
     v.vm.provider "docker" do |d|
-      d.name =            "docker_app"
-      d.image =           "bensojona/packer_2:app_1234"
+      d.name =            "docker_apache"
+      d.image =           "bensojona/apache_image:latest"
       d.cmd =             ["/sbin/my_init", "--enable-insecure-key"]
-      # d.create_args =     [""]
       d.force_host_vm =   true
       d.has_ssh =         true
       d.remains_running = true
@@ -23,9 +22,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       d.auth_server =     ENV['DOCKER_LOGIN_SERVER']
     end
 
-    # v.ssh.username = "root"
-    # v.ssh.private_key_path = ""
-    v.vm.hostname =      "docker-app"
+    v.vm.hostname =      "docker-apache"
     v.vm.provision       "shell", inline: "echo Hello"
     v.vm.synced_folder = ".", "/app"
   end

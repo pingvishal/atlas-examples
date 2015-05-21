@@ -70,7 +70,7 @@ variable "atlas_environment" {
 # Consul cluster specific variables
 variable "docker_consul_image" {
     description = "Docker image name for Consul cluster"
-    default = "hashicorp/packer:consul"
+    default = "bensojona/consul_image:latest"
 }
 variable "consul_count" {
     description = "Count of nodes in Consul cluster"
@@ -78,9 +78,9 @@ variable "consul_count" {
 }
 
 # App specific variables
-variable "docker_app_image" {
+variable "docker_apache_image" {
     description = "Docker image name for app"
-    default = "hashicorp/packer:app"
+    default = "bensojona/apache_image:latest"
 }
 variable "app_count" {
     description = "Count of nodes for app"

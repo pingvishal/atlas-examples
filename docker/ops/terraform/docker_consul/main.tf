@@ -21,7 +21,6 @@ resource "docker_container" "consul" {
             "sudo sed -i -- 's/{{ atlas_token }}/${var.atlas_token}/g' /etc/service/consul/run",
             "sudo sed -i -- 's/{{ atlas_environment }}/${var.atlas_environment}/g' /etc/service/consul/run",
             "sudo sed -i -- 's/{{ count }}/${var.count}/g' /etc/service/consul/run",
-            "sudo chmod +x /etc/service/consul/run",
             "sudo sv restart consul"
         ]
         connection {

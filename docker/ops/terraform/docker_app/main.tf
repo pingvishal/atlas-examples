@@ -11,6 +11,10 @@ resource "docker_container" "app" {
     must_run = true
     command = ["/sbin/my_init"]
     ports = {
+        internal = "80"
+        external = "80"
+    }
+    ports = {
         internal = "22"
         external = "${var.port}${count.index}"
     }
@@ -20,7 +24,6 @@ resource "docker_container" "app" {
             "sudo sed -i -- 's/{{ atlas_username }}/${var.atlas_username}/g' /etc/service/consul/run",
             "sudo sed -i -- 's/{{ atlas_token }}/${var.atlas_token}/g' /etc/service/consul/run",
             "sudo sed -i -- 's/{{ atlas_environment }}/${var.atlas_environment}/g' /etc/service/consul/run",
-            "sudo chmod +x /etc/service/consul/run",
             "sudo sv restart consul"
         ]
         connection {

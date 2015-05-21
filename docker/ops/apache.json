@@ -1,7 +1,7 @@
 {
     "variables": {
         "docker_image": "phusion/baseimage:latest",
-        "docker_repository": "bensojona/packer_2",
+        "docker_repository": "bensojona/apache_image",
         "docker_login_email": "{{env `DOCKER_LOGIN_EMAIL`}}",
         "docker_username": "{{env `DOCKER_USER_NAME`}}",
         "docker_password": "{{env `DOCKER_PASSWORD`}}",
@@ -15,7 +15,7 @@
         }
     ],
     "push": {
-      "name": "jb_hashicorp/docker-consul",
+      "name": "jb_hashicorp/docker_app",
       "vcs": false
     },
     "provisioners": [
@@ -37,14 +37,25 @@
         },
         {
             "type": "shell",
-            "script": "scripts/consul_server.sh"
+            "script": "scripts/consul_client.sh"
+        },
+        {
+            "type": "shell",
+            "script": "scripts/apache_base.sh"
         },
         {
             "type": "shell",
             "inline": [
-                "sudo echo nameserver 8.8.8.8 >> /etc/resolv.conf",
+                "sudo mkdir /app",
+                "sudo chmod a+w /app"
+            ]
+        },
+        {
+            "type": "shell",
+            "inline": [
                 "sudo rm -f /etc/service/sshd/down",
-                "sudo cat /ops/terraform/ssh_keys/docker-key.pub >> /root/.ssh/authorized_keys"
+                "sudo cat /ops/terraform/ssh_keys/docker-key.pub >> /root/.ssh/authorized_keys",
+                "sudo cp -rf /ops/app/. /var/www/html"
             ]
         }
     ],
@@ -53,8 +64,7 @@
             {
                 "type": "docker-tag",
                 "repository": "{{user `docker_repository`}}",
-                "tag": "consul_{{timestamp}}",
-                "keep_input_artifact": true
+                "tag": "latest"
             },
             {
                 "type": "docker-push",

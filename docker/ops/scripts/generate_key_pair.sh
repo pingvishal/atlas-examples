@@ -1,3 +1,4 @@
+#!/bin/sh
 if [ -s "terraform/ssh_keys/docker-key.pem" ] && [ -s "terraform/ssh_keys/docker-key.pub" ] && [ -z "$1" ]; then
     echo Using existing key pair
 else

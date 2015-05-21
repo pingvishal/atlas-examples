@@ -1,5 +1,4 @@
-#!/bin/bash
-
+#!/bin/sh
 echo Installing dependencies...
 sudo apt-get -y update
 sudo apt-get install -y wget

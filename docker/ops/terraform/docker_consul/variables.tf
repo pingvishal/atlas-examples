@@ -14,5 +14,5 @@ variable "agent" {
 }
 variable "host" {}
 variable "port" {
-    default = 222
+    default = 100
 }
