@@ -1,2 +1,0 @@
-use_gunicorn: yes
-gunicorn_version: 19.1.1

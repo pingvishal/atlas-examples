@@ -1,7 +1,0 @@
-{
-  "service": {
-    "name": "rails",
-    "port": 80,
-    "tags": ["rails"]
-  }
-}

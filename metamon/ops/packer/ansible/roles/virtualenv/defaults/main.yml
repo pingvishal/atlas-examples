@@ -1,2 +1,0 @@
-virtualenv_dir: "{{ home }}/.virtualenvs/{{ project_name }}"
-virtualenv_bin_dir: "{{ virtualenv_dir }}/bin"

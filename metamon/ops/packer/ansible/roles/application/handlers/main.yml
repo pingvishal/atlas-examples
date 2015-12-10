@@ -1,7 +1,0 @@
----
-- name: run migrations
-  django_manage: command=migrate
-                 app_path={{ django_manage_path }}
-                 settings={{ django_settings_python_path }}
-                 virtualenv={{ virtualenv_dir }}
-  sudo: no

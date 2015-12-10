@@ -1,6 +1,0 @@
-# Development Machines
- dev          ansible_ssh_host=192.168.50.10
-
-
-[vagrant]
-dev
