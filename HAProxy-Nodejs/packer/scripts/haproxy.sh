@@ -2,6 +2,8 @@
 set -e
 
 # install HAproxy
+sudo add-apt-repository ppa:vbernat/haproxy-1.6
+sudo apt-get update
 sudo apt-get install -y haproxy
 sudo chmod a+w /etc/rsyslog.conf
 echo '$ModLoad imudp' >> /etc/rsyslog.conf
